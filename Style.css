@@ -1,0 +1,10 @@
+.inputPart{
+    width: 100%;
+}
+.inputPart td{
+width: 33%;
+text-align: center;
+}
+.headTitle{
+    text-align: center; 
+}

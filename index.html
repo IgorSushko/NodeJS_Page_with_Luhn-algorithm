@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <H1>This page verify Is your Bank's card valid</H1>
+    <title>Bank's card validator</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="Style.css">
+    </head>
+<body>
+<hr>
+<br/>
+<br/>
+<br/>
+<h1 class="headTitle">Input your card number</h1>
+    <form action="/" method="post">
+          <table class="inputPart">
+                <tr>
+                    <td ></td>
+                    <td >
+                        Card: <input style="font-size:20px;" name="A" type="text" id="cardValue" value="Please input data here" size="32">
+                        <br/>
+                        <br/>
+                        <br/>
+                        <input type="submit" value="Submit">  <!--<button onclick="myFunction()">Try it</button>--></td>
+                    <td ></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><h1>Your result is:</h1></td>
+                    <td></td>  
+                </tr>
+                 <tr>
+                     <td></td>
+                     <td><input style="font-size:20px;"  type="text" id="cardValueRes" value="Your result will be shown here" size="32"></td>
+                     <td></td>
+                 </tr>
+          </table>
+    </form>
+          <script type="text/javascript">
+
+            var term;
+        
+            function information() {
+                term = document.getElementById("cardValue").value;
+            }
+        
+        </script>
+</body>
+</html>
