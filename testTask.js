@@ -6,11 +6,13 @@ const PORT=8080;
 
 
 var server =http.createServer(function(request,response){
+
         console.log('Request was made :' + request.url);
         console.log('Request method :' + request.method);
+
      if(request.method == "GET"){
             if(request.url==='/'){
-                     response.writeHeader(200, {"Content-Type": "text/html"});  
+                    response.writeHeader(200, {"Content-Type": "text/html"});  
                     var myHtml=fs.createReadStream('./TestTask/index.html','utf8');
                     myHtml.pipe(response);}
             else if(request.url==='/Style.css'){
@@ -23,7 +25,7 @@ var server =http.createServer(function(request,response){
             request.on('data', function(chunk) {
 
                 //grab form data as string
-                var formdata = chunk.toString();
+                var formdata = chunk.toString();      
                 var number = eval(formdata.split("&")[0]);
                 console.log(number);
 
@@ -34,9 +36,7 @@ var server =http.createServer(function(request,response){
                          }  else{
                             showingResult='Card number: '+number.toString()+' is NOT valid ';
                          }   
-                     
-
-                
+                                     
                 form ='<!DOCTYPE html> \
                 <html> \
                     <head> \
@@ -56,11 +56,11 @@ var server =http.createServer(function(request,response){
                                 <tr> \
                                     <td ></td> \
                                     <td > \
-                                        Card: <input style="font-size:20px;" type="text" id="cardValue" value="'+number.toString()+'" size="32"> \
+                                    Card: <input style="font-size:20px;" name="A" type="text" id="cardValue" value="Please input data here" size="32"> \
                                         <br/> \
                                         <br/> \
                                         <br/> \
-                                        <button onclick="information()" >Try it</button>  <!--<button onclick="myFunction()">Try it</button>--></td> \
+                                        <input type="submit" value="Submit"></td>\
                                     <td ></td> \
                                 </tr> \
                                 <tr> \
