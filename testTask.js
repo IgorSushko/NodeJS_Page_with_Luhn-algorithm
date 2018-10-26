@@ -1,96 +1,67 @@
-var http = require('http');
-var fs = require('fs');
-var fastluhn=require('fast-luhn');
+const http = require('http')
+const fs = require('fs')
+const fastluhn=require('fast-luhn')
 
-const PORT=8080; 
+const PORT=8080;
 
 
-var server =http.createServer(function(request,response){
+const server =http.createServer(function(request,response){
 
-        console.log('Request was made :' + request.url);
-        console.log('Request method :' + request.method);
+        console.log ('Request was made :' + request.url);
+        console.log ('Request method :' + request.method);
 
-     if(request.method == "GET"){
-            if(request.url==='/'){
-                    response.writeHeader(200, {"Content-Type": "text/html"});  
-                    var myHtml=fs.createReadStream('./TestTask/index.html','utf8');
-                    myHtml.pipe(response);}
-            else if(request.url==='/Style.css'){
+     if (request.method == "GET") {
+            if (request.url==='/') {
+                    response.writeHeader(200, {"Content-Type": "text/html"}); 
+                    
+                    var myHtml=fs.readFile('./TestTask/index.html','utf8',function(error, data){
+                 
+                        const answerValue = "Your result will be shown here"; 
+                        data = data.toString().replace('{answerValue}', answerValue);
+                        response.end(data);}); 
+                } 
+
+            else if (request.url==='/Style.css') {
                     response.writeHeader(200, {"Content-Type": "text/css"});  
-                    var myHtml=fs.createReadStream('./TestTask/Style.css','utf8');
+                    const myHtml=fs.createReadStream('./TestTask/Style.css','utf8');
                     myHtml.pipe(response);
-                    }
-        } else if(request.method == 'POST'){
+                }
+            else if (request.url==='/favicon.png' ||'/favicon.ico' ) {
+                        console.log('Request method for favicon');
+                        response.writeHeader(200, {"Content-Type": "image/png"});  
+                        const myHtml=fs.createReadStream('./TestTask/favicon.png');
+                        myHtml.pipe(response);
+                } } 
+      else if (request.method == 'POST') {
+
             console.log('Request method :' + request.method); 
             request.on('data', function(chunk) {
 
-                //grab form data as string
-                var formdata = chunk.toString();      
-                var number = eval(formdata.split("&")[0]);
+                let formdata = chunk.toString();      
+                let number = eval(formdata.split("&")[0]);
                 console.log(number);
 
-                var result = fastluhn(number.toString());
+                let result = fastluhn(number.toString());
                 var showingResult=''; 
-                    if(result==true){
+                    if (result==true) {
                             showingResult='Card number: '+number.toString()+' is valid ';
-                         }  else{
+                                       }  
+                         else {
                             showingResult='Card number: '+number.toString()+' is NOT valid ';
-                         }   
-                                     
-                form ='<!DOCTYPE html> \
-                <html> \
-                    <head> \
-                    <H1>This page verify Is your Banks card valid</H1> \
-                    <title>Banks card validator</title> \
-                    <meta charset="UTF-8"> \
-                    <link rel="stylesheet" type="text/css" href="Style.css"> \
-                    </head> \
-                <body> \
-                <hr> \
-                <br/> \
-                <br/> \
-                <br/> \
-                <h1 class="headTitle">Input your card number</h1> \
-                    <form action="/" method="post"> \
-                          <table class="inputPart"> \
-                                <tr> \
-                                    <td ></td> \
-                                    <td > \
-                                    Card: <input style="font-size:20px;" name="A" type="text" id="cardValue" value="Please input data here" size="32"> \
-                                        <br/> \
-                                        <br/> \
-                                        <br/> \
-                                        <input type="submit" value="Submit"></td>\
-                                    <td ></td> \
-                                </tr> \
-                                <tr> \
-                                    <td></td> \
-                                    <td><h1>Your result is:</h1></td> \
-                                    <td></td>   \
-                                </tr> \
-                                 <tr> \
-                                     <td></td> \
-                                     <td><input style="font-size:20px;" type="text" id="cardValueRes" value="'+showingResult+'" size="47"></td> \
-                                     <td></td> \
-                                 </tr> \
-                          </table> \
-                    </form> \
-                            </body> \
-                       </html>' ;
-
+                                       }   
+                           
                        response.setHeader('Content-Type', 'text/html');
-                       response.writeHead(200);
-                       response.end(form);
-            })
-
-
-
-
+                       var myHtmlresp=fs.readFile('./TestTask/index.html','utf8',function(error, data) {
+                            const answerValue = showingResult; 
+                            data = data.toString().replace('{answerValue}', answerValue);
+                            response.end(data);});
+                       //response.writeHead(200);
+                        }) //response.end(form);
 
         } else {
-            response.writeHead(200);
-            response.end();
-          };
+             response.writeHead(200);
+             response.end();
+              };
 
 }).listen(PORT);
 
