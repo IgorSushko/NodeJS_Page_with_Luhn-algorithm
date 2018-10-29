@@ -18,45 +18,50 @@ const TEMPLATE_FILES = {
     path: './favicon.png',
   },
 };
-
+function showHtml(response, answerValue, enteredValue) {
+  response.writeHeader(200, { 'Content-Type': 'text/html' });
+  fs.readFile(TEMPLATE_PATH, 'utf8', (error, data) => {
+    const replaced = data.toString()
+      .replace('{answerValue}', answerValue)
+      .replace('{enteredValue}', enteredValue);
+    response.end(replaced);
+  });
+}
 http.createServer((request, response) => {
   console.log(`Request was made :${request.url}`);
   console.log(`Request method :${request.method}`);
 
   if (request.method === 'GET') {
-    if (request.url === '/') {
-      response.writeHeader(200, { 'Content-Type': 'text/html' });
-      fs.readFile(TEMPLATE_PATH, 'utf8', (error, data) => {
-        const answerValue = 'Your result will be shown here';
-        const replaced = data.toString().replace('{answerValue}', answerValue);
-        response.end(replaced);
-      });
-    } else if (TEMPLATE_FILES[request.url]) {
+    if (TEMPLATE_FILES[request.url]) {
       response.writeHeader(200, { 'Content-Type': TEMPLATE_FILES[request.url].type });
       fs.createReadStream(TEMPLATE_FILES[request.url].path).pipe(response);
     } else {
-      console.log('Unknown request', request.url);
+      showHtml(response, 'Your result will be shown here', ' ');
     }
   } else if (request.method === 'POST') {
     console.log(`Request method :${request.method}`);
     request.on('data', (chunk) => {
       const formdata = chunk.toString();
-      const number = eval(formdata.split('&')[0]);
-      console.log(number);
+      console.log('chunk', formdata);
+      const tmp = formdata.split('&')[0];
+      console.log('chunk splitted &', tmp);
 
-      const result = fastluhn(number.toString());
       let showingResult = '';
-      if (result === true) {
-        showingResult = `Card number: ${number.toString()} is valid `;
-      } else {
-        showingResult = `Card number: ${number.toString()} is NOT valid `;
+      let number = 0;
+      if (tmp) {
+        const tmp2 = tmp.split('=')[1];
+        console.log('chunk splitted &=', tmp2);
+        if (tmp2) {
+          number = tmp2 * 1;
+          console.log('chunk splitted &= and transformed to number', number);
+          if (fastluhn(number.toString()) === true) {
+            showingResult = `Card number: ${number.toString()} is valid `;
+          } else {
+            showingResult = `Card number: ${number.toString()} is NOT valid `;
+          }
+        }
       }
-
-      response.setHeader('Content-Type', 'text/html');
-      fs.readFile(TEMPLATE_PATH, 'utf8', (error, data) => {
-        const replaced = data.toString().replace('{answerValue}', showingResult);
-        response.end(replaced);
-      });
+      showHtml(response, showingResult, number);
       // response.writeHead(200);
     }); // response.end(form);
   } else {

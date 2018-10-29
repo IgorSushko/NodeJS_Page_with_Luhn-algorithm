@@ -1,4 +1,11 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
+  "env": {
+    "mocha": true,
+    "node": true
+  },
   extends: "airbnb-base",
   rules: {
     no-console: 0
