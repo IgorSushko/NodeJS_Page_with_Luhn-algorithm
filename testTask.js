@@ -27,6 +27,41 @@ function showHtml(response, answerValue, enteredValue) {
     response.end(replaced);
   });
 }
+
+function parseInput(formdata) {
+  console.log('chunk', formdata);
+  const tmp = formdata.split('&')[0];
+  console.log('chunk splitted &', tmp);
+  if (!tmp) {
+    return false;
+  }
+  const tmp2 = tmp.split('=')[1];
+  console.log('chunk splitted &=', tmp2);
+  if (!tmp2) {
+    return false;
+  }
+  const number = tmp2 * 1;
+  console.log('chunk splitted &= and transformed to number', number);
+  if (!(number > 0)) {
+    return 0;
+  }
+  return tmp2;
+}
+
+function parseAndCheckInput(formdata) {
+  const number = parseInput(formdata);
+  if (number === false) {
+    return ['', ''];
+  }
+  let showingResult = '';
+  if (fastluhn(number.toString()) === true) {
+    showingResult = `Card number: ${number} is valid `;
+  } else {
+    showingResult = `Card number: ${number} is NOT valid `;
+  }
+  return [showingResult, number];
+}
+
 http.createServer((request, response) => {
   console.log(`Request was made :${request.url}`);
   console.log(`Request method :${request.method}`);
@@ -41,26 +76,7 @@ http.createServer((request, response) => {
   } else if (request.method === 'POST') {
     console.log(`Request method :${request.method}`);
     request.on('data', (chunk) => {
-      const formdata = chunk.toString();
-      console.log('chunk', formdata);
-      const tmp = formdata.split('&')[0];
-      console.log('chunk splitted &', tmp);
-
-      let showingResult = '';
-      let number = 0;
-      if (tmp) {
-        const tmp2 = tmp.split('=')[1];
-        console.log('chunk splitted &=', tmp2);
-        if (tmp2) {
-          number = tmp2 * 1;
-          console.log('chunk splitted &= and transformed to number', number);
-          if (fastluhn(number.toString()) === true) {
-            showingResult = `Card number: ${number.toString()} is valid `;
-          } else {
-            showingResult = `Card number: ${number.toString()} is NOT valid `;
-          }
-        }
-      }
+      const [showingResult, number] = parseAndCheckInput(chunk.toString());
       showHtml(response, showingResult, number);
       // response.writeHead(200);
     }); // response.end(form);
