@@ -3,7 +3,21 @@ const fs = require('fs');
 const fastluhn = require('fast-luhn');
 
 const PORT = 8080;
-
+const TEMPLATE_PATH = './index.html';
+const TEMPLATE_FILES = {
+  '/Style.css': {
+    type: 'text/css',
+    path: './Style.css',
+  },
+  '/favicon.png': {
+    type: 'image/png',
+    path: './favicon.png',
+  },
+  '/favicon.ico': {
+    type: 'image/png',
+    path: './favicon.png',
+  },
+};
 
 http.createServer((request, response) => {
   console.log(`Request was made :${request.url}`);
@@ -12,18 +26,16 @@ http.createServer((request, response) => {
   if (request.method === 'GET') {
     if (request.url === '/') {
       response.writeHeader(200, { 'Content-Type': 'text/html' });
-      fs.readFile('./TestTask/index.html', 'utf8', (error, data) => {
+      fs.readFile(TEMPLATE_PATH, 'utf8', (error, data) => {
         const answerValue = 'Your result will be shown here';
         const replaced = data.toString().replace('{answerValue}', answerValue);
         response.end(replaced);
       });
-    } else if (request.url === '/Style.css') {
-      response.writeHeader(200, { 'Content-Type': 'text/css' });
-      fs.createReadStream('./TestTask/Style.css', 'utf8').pipe(response);
-    } else if (request.url === '/favicon.png' || '/favicon.ico') {
-      console.log('Request method for favicon');
-      response.writeHeader(200, { 'Content-Type': 'image/png' });
-      fs.createReadStream('./TestTask/favicon.png').pipe(response);
+    } else if (TEMPLATE_FILES[request.url]) {
+      response.writeHeader(200, { 'Content-Type': TEMPLATE_FILES[request.url].type });
+      fs.createReadStream(TEMPLATE_FILES[request.url].path).pipe(response);
+    } else {
+      console.log('Unknown request', request.url);
     }
   } else if (request.method === 'POST') {
     console.log(`Request method :${request.method}`);
@@ -41,7 +53,7 @@ http.createServer((request, response) => {
       }
 
       response.setHeader('Content-Type', 'text/html');
-      fs.readFile('./TestTask/index.html', 'utf8', (error, data) => {
+      fs.readFile(TEMPLATE_PATH, 'utf8', (error, data) => {
         const replaced = data.toString().replace('{answerValue}', showingResult);
         response.end(replaced);
       });
