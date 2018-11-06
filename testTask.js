@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
-const fastluhn = require('fast-luhn');
 const extnote = require('./funcfile.js');
+const logfile = require('./workwithjson.js');
 
 
 const TEMPLATE_PATH = './TestTask/index.html';
@@ -46,6 +46,7 @@ http.createServer((request, response) => {
     request.on('data', (chunk) => {
       const [showingResult, number] = extnote.parseAndCheckInput(chunk.toString());
       showHtml(response, showingResult, number);
+      logfile.saveToLogFile(showingResult, number);
       // response.writeHead(200);
     }); // response.end(form);
   } else {
