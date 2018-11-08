@@ -2,6 +2,10 @@ const fastluhn = require('fast-luhn');
 
 module.exports.PORT = 8080;
 
+/**
+ * @param {String} formdata
+ * @returns {boolean|int}
+ */
 function parseInput(formdata) {
   console.log('chunk', formdata);
   const tmp = formdata.split('&')[0];
@@ -19,13 +23,13 @@ function parseInput(formdata) {
   if (!(number > 0)) {
     return 0;
   }
-  return tmp2;
+  return number;
 }
 
-module.exports.parseAndCheckInput = (formdata) => {
-  const number = parseInput(formdata);
+module.exports.parseAndCheckInput = (formData) => {
+  const number = parseInput(formData);
   if (number === false) {
-    return ['', ''];
+    return ['', 0];
   }
   let showingResult = '';
   if (fastluhn(number.toString()) === true) {

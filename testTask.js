@@ -1,28 +1,21 @@
+// this line should be moved to docker settings as ive tired to rewrite different folders
+// im starting server from CURRENT folder - not outside
+// you start from ./testTask (its even not in repo nothing like this - just your local folder name testTask etc
+process.env.FILES_ROOT_FOLDER = '.';
+
 const http = require('http');
 const fs = require('fs');
-const extnote = require('./funcfile.js');
-const logfile = require('./workwithjson.js');
+const extnote = require('./src/operations.js');
+const logfile = require('./src/workWithJson.js');
 
-
-const TEMPLATE_PATH = './TestTask/index.html';
-const TEMPLATE_FILES = {
-  '/Style.css': {
-    type: 'text/css',
-    path: './TestTask/Style.css',
-  },
-  '/favicon.png': {
-    type: 'image/png',
-    path: './TestTask/favicon.png',
-  },
-  '/favicon.ico': {
-    type: 'image/png',
-    path: './TestTask/favicon.png',
-  },
-};
+const settings = require('./src/settings');
 
 function showHtml(response, answerValue, enteredValue) {
   response.writeHeader(200, { 'Content-Type': 'text/html' });
-  fs.readFile(TEMPLATE_PATH, 'utf8', (error, data) => {
+  fs.readFile(settings.TEMPLATE_PATH, 'utf8', (error, data) => {
+    if (error) {
+      throw error;
+    }
     const replaced = data.toString()
       .replace('{answerValue}', answerValue)
       .replace('{enteredValue}', enteredValue);
@@ -35,9 +28,9 @@ http.createServer((request, response) => {
   console.log(`Request method :${request.method}`);
 
   if (request.method === 'GET') {
-    if (TEMPLATE_FILES[request.url]) {
-      response.writeHeader(200, { 'Content-Type': TEMPLATE_FILES[request.url].type });
-      fs.createReadStream(TEMPLATE_FILES[request.url].path).pipe(response);
+    if (settings.TEMPLATE_FILES[request.url]) {
+      response.writeHeader(200, { 'Content-Type': settings.TEMPLATE_FILES[request.url].type });
+      fs.createReadStream(settings.TEMPLATE_FILES[request.url].path).pipe(response);
     } else {
       showHtml(response, 'Your result will be shown here', ' ');
     }
