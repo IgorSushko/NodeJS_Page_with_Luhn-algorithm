@@ -1,5 +1,5 @@
-const fastluhn = require('fast-luhn');
-
+//const fastluhn = require('fast-luhn');
+const fastluhn = require('./luhnalgoIs.js');
 module.exports.PORT = 8080;
 
 /**
@@ -32,7 +32,7 @@ module.exports.parseAndCheckInput = (formData) => {
     return ['', 0];
   }
   let showingResult = '';
-  if (fastluhn(number.toString()) === true) {
+  if (fastluhn.luhnByIs(number.toString()) === true) {
     showingResult = `Card number: ${number} is valid `;
   } else {
     showingResult = `Card number: ${number} is NOT valid `;

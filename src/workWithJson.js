@@ -8,5 +8,5 @@ module.exports.saveToLogFile = (showingResult, number) => {
     verificationTime: `${currentTime}`,
   };
   const jsonObjstring = JSON.stringify(jsonObj);
-  fs.appendFileSync(`${process.env.FILES_ROOT_FOLDER}/data/cardValidatorLog.json`, jsonObjstring);
+  fs.appendFileSync(`${process.env.FILES_ROOT_FOLDER}/TestTask/data/cardValidatorLog.json`, jsonObjstring);
 };
