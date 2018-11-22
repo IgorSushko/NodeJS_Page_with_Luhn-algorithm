@@ -7,6 +7,7 @@ const http = require('http');
 const fs = require('fs');
 const extnote = require('./src/operations.js');
 const logfile = require('./src/workWithJson.js');
+const mysqltest = require('./src/workWithMySql.js');
 
 const settings = require('./src/settings');
 
@@ -40,6 +41,7 @@ http.createServer((request, response) => {
       const [showingResult, number] = extnote.parseAndCheckInput(chunk.toString());
       showHtml(response, showingResult, number);
       logfile.saveToLogFile(showingResult, number);
+      mysqltest.writeToDb(number, showingResult);
       // response.writeHead(200);
     }); // response.end(form);
   } else {

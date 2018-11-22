@@ -1,0 +1,15 @@
+version: '2'
+services:
+  db_icoapi:
+    image: mysql:5.7
+    container_name: dbtest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: nicecti1!
+      MYSQL_DATABASE: testmysql
+      MYSQL_USER: igor
+      MYSQL_PASSWORD: nicecti1!
+      LANG: C.UTF-8
+      TIMEZONE: UTC
+    ports:
+      - "3306:3306"
