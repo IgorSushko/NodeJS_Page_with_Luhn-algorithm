@@ -1,11 +1,12 @@
-//const cardValue = 4532015112830366;4149497848235141
-//const cardValue = 4149497848235141;
+// const cardValue = 4532015112830366;4149497848235141
+// const cardValue = 4149497848235141;
 module.exports.luhnByIs = (cardValue) => {
-  let arr = cardValue.toString().split('');
+  const arr = cardValue.toString().split('');
   let summ = 0;
   console.log(...arr);
-  for (let i = 0; i < arr.length; i++) arr[i] = parseInt(arr[i], 10);
-
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = parseInt(arr[i], 10);
+  }
   for (let i = 0; i < arr.length; i++) {
     if (i % 2 === 0) {
       arr[i] *= 2;
@@ -15,7 +16,7 @@ module.exports.luhnByIs = (cardValue) => {
     }
     summ += arr[i];
   }
-  const result = (summ % 10 === 0) ? true : false;
+  const result = (summ % 10 === 0);
   console.log(...arr);
   console.log(result);
   return result;

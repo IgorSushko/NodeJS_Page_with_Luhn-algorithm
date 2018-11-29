@@ -1,5 +1,6 @@
-//const fastluhn = require('fast-luhn');
-const fastluhn = require('./luhnalgoIs.js');
+// const fastluhn = require('fast-luhn');
+const fastluhn = require('./luhnByIs.js');
+
 module.exports.PORT = 8080;
 
 /**
