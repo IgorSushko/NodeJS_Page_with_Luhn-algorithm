@@ -48,7 +48,7 @@ http.createServer((request, response) => {
     response.writeHead(200);
     response.end();
   }
-}).listen(extnote.PORT);
+}).listen(settings.PORT);
 
 
 // http://localhost:8080/

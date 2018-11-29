@@ -1,8 +1,6 @@
 // const fastluhn = require('fast-luhn');
 const fastluhn = require('./luhnByIs.js');
 
-module.exports.PORT = 8080;
-
 /**
  * @param {String} formdata
  * @returns {boolean|int}

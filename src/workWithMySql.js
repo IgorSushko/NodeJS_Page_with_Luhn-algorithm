@@ -1,10 +1,12 @@
 const mysql = require('mysql');
 
+const settings = require('./settings');
+
 const connection = mysql.createConnection({
-  host: 'localhost',
-  database: 'testmysql',
-  user: 'igor',
-  password: 'nicecti1!',
+  host: settings.DB_HOST,
+  database: settings.DB_NAME,
+  user: settings.DB_USER,
+  password: settings.DB_PASS,
 });
 
 connection.connect((err) => {
@@ -23,6 +25,7 @@ module.exports.readFromDb = () => {
     results.forEach((result) => {
       console.log(result);
     });
+    // return is not propagated outside!
     return results;
   });
 };
@@ -37,6 +40,8 @@ module.exports.writeToDb = (Rcardnumber, Rresult, Rcomments = '') => {
   const RtimeStamp = Date.now();
   connection.query('INSERT INTO tblLuhnResult1 (cardnumber, result,timeStamp,comments) VALUES (?,?,?,?)', [Rcardnumber, Rresult, RtimeStamp, Rcomments], (error) => {
     if (error) throw error;
+    // only here will end
+    // but without promise will not wait
   });
 };
 
