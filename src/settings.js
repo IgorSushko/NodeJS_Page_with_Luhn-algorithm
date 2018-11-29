@@ -1,17 +1,22 @@
 module.exports = {
-  TEMPLATE_PATH: `${process.env.FILES_ROOT_FOLDER}/TestTask/templates/index.html`,
+  PORT : 8080,
+  DB_HOST: 'localhost',
+  DB_NAME : 'testmysql',
+  DB_USER : 'igor',
+  DB_PASS : 'nicecti1!',
+  TEMPLATE_PATH: `${process.env.FILES_ROOT_FOLDER}/templates/index.html`,
   TEMPLATE_FILES: {
     '/style.css': {
       type: 'text/css',
-      path: `${process.env.FILES_ROOT_FOLDER}/TestTask/templates/style.css`,
+      path: `${process.env.FILES_ROOT_FOLDER}/templates/style.css`,
     },
     '/favicon.png': {
       type: 'image/png',
-      path: `${process.env.FILES_ROOT_FOLDER}/TestTask/templates/favicon.png`,
+      path: `${process.env.FILES_ROOT_FOLDER}/templates/favicon.png`,
     },
     '/favicon.ico': {
       type: 'image/png',
-      path: `${process.env.FILES_ROOT_FOLDER}/TestTask/templates/favicon.png`,
+      path: `${process.env.FILES_ROOT_FOLDER}/templates/favicon.png`,
     },
   },
 };
