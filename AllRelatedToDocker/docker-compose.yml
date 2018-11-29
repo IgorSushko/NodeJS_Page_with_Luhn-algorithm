@@ -11,5 +11,7 @@ services:
       MYSQL_PASSWORD: nicecti1!
       LANG: C.UTF-8
       TIMEZONE: UTC
+    volumes:
+    - ./sql:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
