@@ -29,6 +29,14 @@ module.exports.readFromDb = () => {
     return results;
   });
 };
+module.exports.readFromDbCorrect = () => new Promise((resolve, reject) => {
+  connection.query('SELECT * FROM tblLuhnResult1', (error, results) => {
+    if (error) {
+      reject(error);
+    }
+    resolve(results);
+  });
+});
 
 /**
  * @param {int} Rcardnumber

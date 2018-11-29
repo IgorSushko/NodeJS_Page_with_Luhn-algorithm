@@ -24,6 +24,13 @@ function showHtml(response, answerValue, enteredValue) {
   });
 }
 
+
+async function getRecords() {
+  console.log('records', await mysqltest.readFromDbCorrect());
+}
+console.log('find records');
+getRecords();
+
 http.createServer((request, response) => {
   console.log(`Request was made :${request.url}`);
   console.log(`Request method :${request.method}`);
